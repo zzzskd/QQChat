@@ -1,5 +1,4 @@
 package Frame;
-
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,13 +10,11 @@ import javax.swing.JOptionPane;
 
 import _Socket.Service;
 
-/**
-* @author zzz
-* @version 创建时间：2018年7月4日 下午7:45:03
+/**启动窗口，服务器唯一的窗口
+*
 */
 public class StartServerFrame extends JFrame implements ActionListener{
 	private static final long serialVersionUID = 1L;
-	
 	private JButton startServer_btn;
 	private JButton endServer_btn;
 	
@@ -28,8 +25,8 @@ public class StartServerFrame extends JFrame implements ActionListener{
 		endServer_btn = new JButton("关闭服务");
 		add(startServer_btn);
 		add(endServer_btn);
-		ImageIcon logo = new ImageIcon("image/server_image.jpg"); //左上方小图标
-		setIconImage(logo.getImage());
+		//ImageIcon logo = new ImageIcon("image/server_image.jpg"); 
+		//setIconImage(logo.getImage());
 		setSize(300, 200);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,23 +35,19 @@ public class StartServerFrame extends JFrame implements ActionListener{
 		startServer_btn.addActionListener(this);
 		endServer_btn.addActionListener(this);
 	}
-	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		StartServerFrame startServer = new StartServerFrame();
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//当点击了开启服务器按钮一定要新开启一个线程 开启动服务器 否则main线程会进入I/O阻塞~ 点击不了关闭服务器
+		
+		
 		if(e.getSource() == startServer_btn) {
-			new startServerThread().start();
+			new startServerThread().start();			//当点击了开启服务器按钮一定要新开启一个线程 开启动服务器 ，否则main线程会进入I/O阻塞~ 点击不了关闭服务器
 			JOptionPane.showMessageDialog(null, "服务器开启成功，请连接...");	
 		}
 		if(e.getSource() == endServer_btn) {
-			/*
-			 * 这里待改进 下线之前向所有在线用户提示
-			 */
 			System.exit(0);
 		}
 	}
@@ -63,9 +56,7 @@ public class StartServerFrame extends JFrame implements ActionListener{
 class startServerThread extends Thread{
 	@Override
 	public void run() {
-		
-		//创建socket
-		Service s = new Service();
+		Service s = new Service();			//把工作交给Service.java来处理，它会创建socket
 		s.startService();
 	}
 }

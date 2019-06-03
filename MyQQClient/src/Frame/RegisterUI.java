@@ -1,5 +1,4 @@
 package Frame;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -22,39 +21,36 @@ import Entity.User;
 import UserSocket.ChatTread;
 import UserSocket.Client;
 import _Util.CommandTranser;
-
-/**
-* @author zzz
-* @version 创建时间：2018年7月7日 下午3:39:05
+//可以改进登录窗口弹出后 一段时间后自动关闭 见https://blog.csdn.net/qq_24448899/article/details/75731529
+/*注册窗口
+*	如果点击了登录按钮 首先判断帐号或者密码是否为空 然后封装为CommandTranser对象 向服务器发送数据 服务器通过与数据库的比对
+* 	来验证帐号密码
 */
 public class RegisterUI extends JFrame implements ActionListener, FocusListener {
 	private static final long serialVersionUID = 1L;
-	private JLabel upper_N, user_name_txt, user_pwd_txt, user_ques_txt, user_ans_txt; //显示文字用
-	private JButton register_button_S;
-	private JTextField user_name, user_pwd, user_ques, user_ans; //在这里面获取用户输入
-	private JPanel tmp_South, center_Center;
-	private MainFrame mainFrame; //用于关闭登录页面 如果注册成功则将刚开始的注册页面关闭
-	//private Client client;
+	private JLabel upper_N, user_name_txt, user_pwd_txt, user_ques_txt, user_ans_txt; 	//标签：显示文字用
+	private JButton register_button_S;													//按钮：提交
+	private JTextField user_name, user_pwd, user_ques, user_ans; 						//文本框：在这里面获取用户输入
+	private JPanel tmp_South, center_Center;											//面板容器：组织显示的结构
+	private MainFrame mainFrame; 														//用于关闭登录页面 如果注册成功则将刚开始的注册页面关闭
+//	private Client client;
 	
 	
 	
 	public RegisterUI(MainFrame mainFrame) {
 		
 		this.mainFrame = mainFrame;
-		
 		//初始化界面
 		init();
-		
 		//合成整体
 		add(center_Center, BorderLayout.CENTER);
-		add(upper_N, BorderLayout.NORTH);
+//		add(upper_N, BorderLayout.NORTH);
 		add(tmp_South, BorderLayout.SOUTH);
-		
 		//位置、页面大小设置
 		setSize(250, 400);
 		setLocation(550, 300);
-		ImageIcon logo = new ImageIcon("image/register_image.png"); //左上方小图标
-		setIconImage(logo.getImage());
+//		ImageIcon logo = new ImageIcon("image/register_image.png"); //左上方小图标
+//		setIconImage(logo.getImage());
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setResizable(false);
 		setVisible(true);
@@ -83,18 +79,21 @@ public class RegisterUI extends JFrame implements ActionListener, FocusListener 
 		
 		//中间部分内容
 		center_Center = new JPanel();
-		user_name_txt = new JLabel("用户账号", JLabel.CENTER);
+		user_name_txt = new JLabel("用户账号", JLabel.CENTER);	//4个标签
 		user_pwd_txt = new JLabel("用户密码", JLabel.CENTER);
 		user_ques_txt = new JLabel("提示问题", JLabel.CENTER);
 		user_ans_txt = new JLabel("问题答案", JLabel.CENTER);
-		user_name = new JTextField();
-		user_pwd = new JTextField();
+		
+		user_name = new JTextField();							//4个文本框
+		user_pwd = new JTextField();	
 		user_ques = new JTextField();
 		user_ans = new JTextField();
-		user_name.addFocusListener(this);
+		
+		user_name.addFocusListener(this);						//4个焦点监听器
 		user_pwd.addFocusListener(this);
 		user_ans.addFocusListener(this);
 		user_ques.addFocusListener(this);
+		
 		center_Center.setLayout(new GridLayout(4, 2));
 		center_Center.add(user_name_txt);
 		center_Center.add(user_name);
@@ -106,39 +105,37 @@ public class RegisterUI extends JFrame implements ActionListener, FocusListener 
 		center_Center.add(user_ans);
 		
 	}
+	
+
+	
+	
+	
 	public void actionPerformed(ActionEvent e) {
-		/*
-		 * 如果点击了登录按钮 首先判断帐号或者密码是否为空 然后封装为CommandTranser对象 向服务器发送数据 服务器通过与数据库的比对
-		 * 来验证帐号密码
-		 */
-		if (e.getSource() == register_button_S) {
-			String username = user_name.getText().trim();
+		if (e.getSource() == register_button_S) {	
+			String username = user_name.getText().trim();					//4个文本框提取内容
 			String password =  user_pwd.getText().trim();
 			String userques = user_ques.getText().trim();
 			String userans = user_ans.getText().trim();
-			if ("".equals(username) || username == null) {
+						
+			if ("".equals(username) || username == null) {					//4个文本框检查
 				JOptionPane.showMessageDialog(null, "请输入帐号！！");
 				return;
-			}
-			if ("".equals(password) || password == null) {
+			}if ("".equals(password) || password == null) {
 				JOptionPane.showMessageDialog(null, "请输入密码！！");
 				return;
-			}
-			
-			if ("".equals(userques) || userques == null) {
+			}if ("".equals(userques) || userques == null) {
 				JOptionPane.showMessageDialog(null, "请输入问题！！");
 				return;
-			}
-			if ("".equals(userans) || userans == null) {
+			}if ("".equals(userans) || userans == null) {
 				JOptionPane.showMessageDialog(null, "请输入答案！！");
 				return;
 			}
 			
-			User user = new User(username, password);
+			User user = new User(username, password);						//实例化user,为命令封装体做准备
 			user.setUserQuestion(userques);
 			user.setUserAnswer(userans);
 			
-			CommandTranser cmd = new CommandTranser();
+			CommandTranser cmd = new CommandTranser();						//实例化命令封装体，并填写属性值
 			cmd.setCmd("register");
 			cmd.setData(user);
 			cmd.setReceiver(username);
@@ -152,12 +149,8 @@ public class RegisterUI extends JFrame implements ActionListener, FocusListener 
 			if(cmd != null) {
 				if(cmd.isFlag()) {
 					
-					this.dispose(); //关闭注册页面
-					mainFrame.dispose(); //关闭MainFrame页面
-					/*
-					 * 可以改进登录窗口弹出后 一段时间后自动关闭 见https://blog.csdn.net/qq_24448899/article/details/75731529
-					 */
-					
+					this.dispose(); 				//关闭注册页面
+					mainFrame.dispose();			//关闭MainFrame页面
 					JOptionPane.showMessageDialog(null,  "登陆成功");
 					
 					user = (User)cmd.getData(); 
@@ -166,17 +159,14 @@ public class RegisterUI extends JFrame implements ActionListener, FocusListener 
 					ChatTread thread = new ChatTread(client, user, friendsUI); //这里传client为了收消息， 整个客户端用一个 ChatTread，一个client
 					thread.start();
 				}else {
-					/*
-					 * 这里this和null有什么区别?
-					 */
-					JOptionPane.showMessageDialog(this, cmd.getResult());
+					JOptionPane.showMessageDialog(this, cmd.getResult());			//提示窗口
 				}
 			}		
 
 		}
 
 	}
-	//鼠标的点击或移动之类的用focuslistener 这里不知道为啥没变色 （哭
+	//鼠标的点击或移动之类的用focuslistener 不知道为啥没变色
 	@Override
 	public void focusGained(FocusEvent e) {
 		//处理账号输入框

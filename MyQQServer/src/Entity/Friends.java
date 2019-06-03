@@ -1,11 +1,10 @@
-package Entity;
+锘縫ackage Entity;
 /**
-* @author zzz
-* @version 创建时间：2018年7月5日 上午9:14:27
+* 鏈嬪弸绫伙紝娌℃湁瀹炵幇
 */
 public class Friends {
 	private int friends_num = 0;
-	//private Map<>
+	
 	Friends(){
 		
 	}

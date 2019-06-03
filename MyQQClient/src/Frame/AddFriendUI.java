@@ -18,24 +18,22 @@ import Entity.User;
 import UserSocket.Client;
 import _Util.CommandTranser;
 
-/**
-* @author zzz
-* @version 创建时间：2018年7月9日 下午9:07:00
+/**添加好友窗口
+* 
 */
 public class AddFriendUI extends JFrame implements ActionListener {
+	
 	private static final long serialVersionUID = 1L;
-	private User owner;// 当前用户
-	private Client client;// 客户端
+	private User owner;											// 当前用户
+	private Client client;										// 当前客户端
+	private JButton submit_bt;									//提交按钮
+	private JLabel txt_input_name, txt_reinput_name;			//标签显示
+	private JTextField new_name, re_new_name;					//
+	private JPanel center, souTh;								//
 	
-	private JButton submit_bt;
 	
-	private JLabel txt_input_name, txt_reinput_name;
-	private JTextField new_name, re_new_name;
 	
-	private JPanel center, souTh;
-	
-	public AddFriendUI(User owner, Client client) {
-		
+	public AddFriendUI(User owner, Client client) {		//
 		this.owner = owner;
 		this.client = client;
 		
@@ -44,14 +42,17 @@ public class AddFriendUI extends JFrame implements ActionListener {
 		add(center, BorderLayout.CENTER);
 		add(souTh, BorderLayout.SOUTH);
 		
-		setBounds(200, 230, 360, 150); //设定大小及位置
-		setResizable(false); //登录框大小固定，不允许通过拖、拉改变大小
+		setBounds(200, 230, 360, 150); 					//设定大小及位置
+		setResizable(false); 							//登录框大小固定，不允许通过拖、拉改变大小
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE); //设置窗口右上角的叉号，点击叉号窗口关闭 注意不能EXIT_ON_CLOSE做参数的，用它时候使用的是System.exit方法退出应用程序。故会关闭所有窗口。
 		setTitle("添加好友");
 		setVisible(true);
 				
 	}
-	public void init() {
+	
+	
+	
+	public void init() {								//设置框体和字段值
 		txt_input_name = new JLabel();
 		txt_input_name.setText("请输入账号");
 		
@@ -87,14 +88,15 @@ public class AddFriendUI extends JFrame implements ActionListener {
 		souTh.add(empty_2);
 	}
 	
-	//按钮的点击事件用actionPerformed
+	
+	
 	@Override
-	public void actionPerformed(ActionEvent e){
+	public void actionPerformed(ActionEvent e){									//按钮的点击事件用actionPerformed
 		if(e.getSource() == submit_bt){
-			String name = new_name.getText().trim();
+			String name = new_name.getText().trim();							//JTextField获取内容
 			String re_name = re_new_name.getText().trim();
 			if("".equals(name) || name == null) {
-				JOptionPane.showMessageDialog(null, "请输入账号！！");
+				JOptionPane.showMessageDialog(null, "请输入账号！！");			//弹提示框
 				return;
 			}
 			if("".equals(re_name) || re_name == null) {
@@ -110,13 +112,11 @@ public class AddFriendUI extends JFrame implements ActionListener {
 			
 			
 			CommandTranser cmd = new CommandTranser();
-			
 			cmd.setCmd("requeste_add_friend");
 			cmd.setData(name);
 			cmd.setReceiver(name);
 			cmd.setSender(owner.getUsername());
-			
-			client.sendData(cmd); //发送数据
+			client.sendData(cmd); 						//将命令封装体对象序列化并发送
 			
 			this.dispose();
 		}	

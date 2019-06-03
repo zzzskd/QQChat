@@ -1,5 +1,4 @@
 package Frame;
-
 import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.GridLayout;
@@ -18,21 +17,23 @@ import Entity.User;
 import UserSocket.Client;
 import _Util.CommandTranser;
 
-/**
-* @author zzz
-* @version 创建时间：2018年7月9日 下午9:07:22
+/**修改密码窗口
+*
 */
 public class ChangePwdUI extends JFrame implements ActionListener {
+	
 	private static final long serialVersionUID = 1L;
 	private User owner;// 当前用户
 	private Client client;// 客户端
-	
 	private JButton submit_bt;
-	
 	private JLabel txt_input_pwd, txt_reinput_pwd;
 	private JTextField new_pwd, re_new_pwd;
-	
 	private JPanel center, souTh;
+	
+	
+	
+	
+	
 	
 	public ChangePwdUI(User owner, Client client) {
 		
@@ -87,9 +88,13 @@ public class ChangePwdUI extends JFrame implements ActionListener {
 		souTh.add(empty_2);
 	}
 	
-	//按钮的点击事件用actionPerformed
+	
+	
+	
+	
+	
 	@Override
-	public void actionPerformed(ActionEvent e){
+	public void actionPerformed(ActionEvent e){							//按钮的点击事件用actionPerformed
 		if(e.getSource() == submit_bt){
 			String pwd = new_pwd.getText().trim();
 			String re_pwd = re_new_pwd.getText().trim();

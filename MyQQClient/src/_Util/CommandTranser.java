@@ -1,67 +1,59 @@
-package _Util;
-
+ï»¿package _Util;
 import java.io.Serializable;
 
-/**
-* @author zzz
-* @version ´´½¨Ê±¼ä£º2018Äê7ÔÂ4ÈÕ ÉÏÎç12:12:43
+/*
+* 
 */
 public class CommandTranser implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private String sender = null;// ·¢ËÍÕß
-	private String receiver = null;// ½ÓÊÜÕß
-	private Object data = null;// ´«µİµÄÊı¾İ
-	private boolean flag = false;// Ö¸ÁîµÄ´¦Àí½á¹û
-	private String cmd = null;// ·şÎñ¶ËÒª×öµÄÖ¸Áî
-	private String result = null;// ´¦Àí½á¹û
+	private static final long serialVersionUID = 1L;	//åºåˆ—åŒ–ä¿æŒç‰ˆæœ¬å…¼å®¹
+	private String sender = null;						// å‘é€è€…
+	private String receiver = null;						// æ¥å—è€…
+	private Object data = null;							// ä¼ é€’çš„æ•°æ®
+	private boolean flag = false;						// æŒ‡ä»¤çš„å¤„ç†ç»“æœ
+	private String cmd = null;							// æœåŠ¡ç«¯è¦åšçš„æŒ‡ä»¤
+	private String result = null;						// å¤„ç†ç»“æœ
 
+	
+	
+	
+	
+	
+	
 	public String getSender() {
 		return sender;
 	}
-
 	public String setSender(String sender) {
 		return this.sender = sender;
 	}
-
 	public String getReceiver() {
 		return receiver;
 	}
-
 	public String setReceiver(String receiver) {
 		return this.receiver = receiver;
 	}
-
 	public Object getData() {
 		return data;
 	}
-
 	public Object setData(Object data) {
 		return this.data = data;
 	}
-
 	public boolean isFlag() {
 		return flag;
 	}
-
 	public boolean setFlag(boolean flag) {
 		return this.flag = flag;
 	}
-
 	public String getResult() {
 		return result;
 	}
-
 	public String setResult(String result) {
 		return this.result = result;
 	}
-
 	public String getCmd() {
 		return cmd;
 	}
-
 	public String setCmd(String cmd) {
 		return this.cmd = cmd;
 	}
-
 }
 

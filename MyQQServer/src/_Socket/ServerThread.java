@@ -1,4 +1,4 @@
-package _Socket;
+ï»¿package _Socket;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -14,10 +14,20 @@ import _Service.UserService;
 import _Util.CommandTranser;
 import _Util.SocketList;
 
-/**
-* @author zzz
-* @version ´´½¨Ê±¼ä£º2018Äê7ÔÂ4ÈÕ ÏÂÎç8:23:23
+/**æœåŠ¡å™¨ç«¯çš„æ§åˆ¶ä¸­å¿ƒï¼Œè´Ÿè´£å¤„ç†æ¥è‡ªç”¨æˆ·ç«¯çš„æ¶ˆæ¯ï¼Œå¹¶è½¬å‘ç»™æ­£ç¡®çš„ç”¨æˆ·ï¼Œæœ‰æ—¶è¿˜ä¼šå¯¹æ•°æ®åº“è¿›è¡Œæ“ä½œã€‚
+*
 */
+/*execute(CommandTranser cmd)							//å¤„ç†å®¢æˆ·ç«¯å‘æ¥çš„å‘½ä»¤
+ * 		|----"login".equals(cmd.getCmd())				//ç™»å½•è¯·æ±‚
+ * 		|----"register".equals(cmd.getCmd())			//æ³¨å†Œè¯·æ±‚
+ * 		|----"forgetpwd".equals(cmd.getCmd())			//å¿˜è®°å¯†ç 
+ * 		|----"refuse_to_add".equals(cmd.getCmd())		//æ‹’ç»æ·»åŠ ç”³è¯·
+ * 		|----"requeste_add_friend".equals(cmd.getCmd())	//ç”³è¯·æ·»åŠ å¥½å‹
+ * 		|----"accept_add_friend".equals(cmd.getCmd())	//æ¥å—æ·»åŠ ç”³è¯·
+ * 		|----"changepwd".equals(cmd.getCmd())			//ä¿®æ”¹å¯†ç 
+ * 		|----"message".equals(cmd.getCmd())				//å‘é€èŠå¤©å†…å®¹
+ */
+
 public class ServerThread extends Thread{
 	private Socket socket;
 	
@@ -25,7 +35,19 @@ public class ServerThread extends Thread{
 		this.socket = socket;
 	}
 	
-	@Override
+	/*
+	 * run()
+	 * 	|----message
+	 * 	|----request_send_fileï¼Œaccept_send_fileï¼Œrefuse_send_file
+	 * 	|----WorldChat
+	 * 	|----login
+	 * 	|----register
+	 * 	|----requeste_add_friendï¼Œaccept_add_friendï¼Œrefuse_to_add
+	 * 	|----changepwd
+	 * 	|----forgetpwd
+	 * 	
+	 */
+	
 	public void run() {
 		ObjectInputStream ois = null;
 		ObjectOutputStream oos1 = null;
@@ -37,22 +59,39 @@ public class ServerThread extends Thread{
 				ois = new ObjectInputStream(socket.getInputStream());
 				CommandTranser cmd = (CommandTranser) ois.readObject();
 				
-				//Ö´ĞĞÃüÁîÀ´×Ô¿Í»§¶ËµÄÇëÇó
+				//æ‰§è¡Œå‘½ä»¤æ¥è‡ªå®¢æˆ·ç«¯çš„è¯·æ±‚
 				cmd = execute(cmd);
 				
-				//ÏûÏ¢¶Ô»°ÇëÇó£¬·şÎñÆ÷½«sender·¢À´µÄÏûÏ¢·¢ËÍ¸øreceiver
-				if("message".equals(cmd.getCmd())) {
-					//Èç¹û msg.ifFlag¼´ ·şÎñÆ÷´¦Àí³É¹¦ ¿ÉÒÔÏòÅóÓÑ·¢ËÍĞÅÏ¢ Èç¹û·şÎñÆ÷´¦ÀíĞÅÏ¢Ê§°Ü ĞÅÏ¢·¢ËÍ¸ø·¢ËÍÕß±¾ÈË
-					if(cmd.isFlag()) {
-						//System.out.println("¶Ô·½ÔÚÏß");
-						oos1 = new ObjectOutputStream(SocketList.getSocket(cmd.getReceiver()).getOutputStream());
-					} else {
-						//System.out.println("¶Ô·½Î´ÔÚÏß");
-						
-						oos2 = new ObjectOutputStream(socket.getOutputStream());
+				//æ¶ˆæ¯å¯¹è¯è¯·æ±‚ï¼ŒæœåŠ¡å™¨å°†senderå‘æ¥çš„æ¶ˆæ¯å‘é€ç»™receiver
+				if("message".equals(cmd.getCmd())) {									//å¦‚æœ msg.ifFlagå³ æœåŠ¡å™¨å¤„ç†æˆåŠŸ å¯ä»¥å‘æœ‹å‹å‘é€ä¿¡æ¯ å¦‚æœæœåŠ¡å™¨å¤„ç†ä¿¡æ¯å¤±è´¥ ä¿¡æ¯å‘é€ç»™å‘é€è€…æœ¬äºº					
+					if(cmd.isFlag()) {						
+						oos1 = new ObjectOutputStream(SocketList.getSocket(cmd.getReceiver()).getOutputStream());		//å¯¹æ–¹åœ¨çº¿ï¼Œè¿›è¡Œè½¬å‘
+					} else {											
+						oos2 = new ObjectOutputStream(socket.getOutputStream());		//System.out.println("å¯¹æ–¹æœªåœ¨çº¿");,æŠŠæ¶ˆæ¯è¿”å›å»
 					}
 				}
+				if("request_send_file".equals(cmd.getCmd())){
+					if(cmd.isFlag()){
+						oos1 = new ObjectOutputStream(SocketList.getSocket(cmd.getReceiver()).getOutputStream());
+					}else{
+						oos2 = new ObjectOutputStream(socket.getOutputStream());
+					}
+				}				
 				
+				if ("refuse_send_file".equals(cmd.getCmd())) {
+					if(cmd.isFlag()) {
+						oos1 = new ObjectOutputStream(SocketList.getSocket(cmd.getReceiver()).getOutputStream());	//è½¬å‘
+					}else { 
+						oos2 = new ObjectOutputStream(socket.getOutputStream());									//è¿”å›å»
+					}
+				}	
+				if ("accept_send_file".equals(cmd.getCmd())) {
+					if(cmd.isFlag()) {
+						oos1 = new ObjectOutputStream(SocketList.getSocket(cmd.getReceiver()).getOutputStream());	//è½¬å‘
+					}else { 
+						oos2 = new ObjectOutputStream(socket.getOutputStream());									//è¿”å›å»
+					}
+				}
 				if ("WorldChat".equals(cmd.getCmd())) {
 					HashMap<String, Socket> map = SocketList.getMap();
 					Iterator<Map.Entry<String, Socket>> it = map.entrySet().iterator();
@@ -64,22 +103,21 @@ public class ServerThread extends Thread{
 						}
 					}
 					continue;
-					
 				}
-				//µÇÂ¼ÇëÇó ½«Êı¾İ·¢ËÍ¸øsender
+				//ç™»å½•è¯·æ±‚ å°†æ•°æ®å‘é€ç»™sender
 				if ("login".equals(cmd.getCmd())) {
 					oos1 = new ObjectOutputStream(socket.getOutputStream());
 				}
 				
-				//×¢²áÇëÇó ½«Êı¾İ·¢ËÍ¸øsender
+				//æ³¨å†Œè¯·æ±‚ å°†æ•°æ®å‘é€ç»™sender
 				if ("register".equals(cmd.getCmd())) {
-					System.out.println("Ïò¿Í»§¶Ë·¢ËÍÏûÏ¢");
+					System.out.println("å‘å®¢æˆ·ç«¯å‘é€æ¶ˆæ¯");
 					oos1 = new ObjectOutputStream(socket.getOutputStream());
 				}
 				
-				//Ìí¼ÓºÃÓÑÇëÇó½«Êı¾İ·¢ËÍ¸ø receiver
+				//æ·»åŠ å¥½å‹è¯·æ±‚å°†æ•°æ®å‘é€ç»™ receiver
 				if ("requeste_add_friend".equals(cmd.getCmd())) {
-					//ÔÚÏß£¬½«ÇëÇó·¢¸øreceiver
+					//åœ¨çº¿ï¼Œå°†è¯·æ±‚å‘ç»™receiver
 					if(cmd.isFlag()) {
 						oos1 = new ObjectOutputStream(SocketList.getSocket(cmd.getReceiver()).getOutputStream());
 //						oos3 = new ObjectOutputStream(socket.getOutputStream());
@@ -88,14 +126,14 @@ public class ServerThread extends Thread{
 //						newcmd.setCmd("successful");
 //						oos3.writeObject(newcmd);
 					} else {
-						//²»¹ÜÔÚ²»ÔÚÏß¶¼ÒªÏò·¢ËÍ·½ÌáÊ¾ÏûÏ¢·¢ËÍ³É¹¦
+						//ä¸ç®¡åœ¨ä¸åœ¨çº¿éƒ½è¦å‘å‘é€æ–¹æç¤ºæ¶ˆæ¯å‘é€æˆåŠŸ
 						oos2 = new ObjectOutputStream(socket.getOutputStream());
 					}
 				}
 				
-				//Í¬ÒâÌí¼ÓºÃÓÑÇëÇó½«Êı¾İ·¢ËÍ¸ø receiverºÍsender
+				//åŒæ„æ·»åŠ å¥½å‹è¯·æ±‚å°†æ•°æ®å‘é€ç»™ receiverå’Œsender
 				if ("accept_add_friend".equals(cmd.getCmd())) {
-					//ÎŞÂÛÊÇ·ñ³É¹¦²åÈëÊı¾İ¿â¶¼Òª½«½á¹û·´À¡£¬µ«ÓĞ¿ÉÄÜ×î³õÇëÇóµÄ¿Í»§ÏÂÏßÁË
+					//æ— è®ºæ˜¯å¦æˆåŠŸæ’å…¥æ•°æ®åº“éƒ½è¦å°†ç»“æœåé¦ˆï¼Œä½†æœ‰å¯èƒ½æœ€åˆè¯·æ±‚çš„å®¢æˆ·ä¸‹çº¿äº†
 					oos1 = new ObjectOutputStream(socket.getOutputStream());
 					if(SocketList.getSocket(cmd.getReceiver()) != null) {
 						oos2 = new ObjectOutputStream(SocketList.getSocket(cmd.getReceiver()).getOutputStream());
@@ -106,36 +144,36 @@ public class ServerThread extends Thread{
 //					oos1 = new ObjectOutputStream(socket.getOutputStream());
 //				}
 				
-				//¾Ü¾øÌí¼ÓºÃÓÑÇëÇó½«Êı¾İ·¢ËÍ¸ø receiver
+				//æ‹’ç»æ·»åŠ å¥½å‹è¯·æ±‚å°†æ•°æ®å‘é€ç»™ receiver
 				if ("refuse_to_add".equals(cmd.getCmd())) {
-					//±»¾Ü¾ø·½ÔÚÏß
+					//è¢«æ‹’ç»æ–¹åœ¨çº¿
 					if(cmd.isFlag()) {
 						oos1 = new ObjectOutputStream(SocketList.getSocket(cmd.getReceiver()).getOutputStream());
-					}else { //±»¾Ü·½²»ÔÚÏßÔòÏò¾Ü¾ø·½·¢ËÍÏûÏ¢
+					}else { //è¢«æ‹’æ–¹ä¸åœ¨çº¿åˆ™å‘æ‹’ç»æ–¹å‘é€æ¶ˆæ¯
 						oos2 = new ObjectOutputStream(socket.getOutputStream());
 					}
 				}
 				
-				//ĞŞ¸Ä×ÊÁÏÇëÇó ·¢ËÍ¸øsender ¹¦ÄÜÔİÎ´ÊµÏÖ
-				if ("changeinfo".equals(cmd.getCmd())) {
-					oos1 = new ObjectOutputStream(socket.getOutputStream());
-				}
+				//ä¿®æ”¹èµ„æ–™è¯·æ±‚ å‘é€ç»™sender åŠŸèƒ½æš‚æœªå®ç°
+//				if ("changeinfo".equals(cmd.getCmd())) {
+//					oos1 = new ObjectOutputStream(socket.getOutputStream());
+//				}
 				
-				//ĞŞ¸ÄÃÜÂëÇëÇó ½«Êı¾İ·¢ËÍ¸øsender
+				//ä¿®æ”¹å¯†ç è¯·æ±‚ å°†æ•°æ®å‘é€ç»™sender
 				if ("changepwd".equals(cmd.getCmd())) {
 					oos1 = new ObjectOutputStream(socket.getOutputStream());
 				}
 				
-				//Íü¼ÇÃÜÂë ·¢ËÍ¸øsender
+				//å¿˜è®°å¯†ç  å‘é€ç»™sender
 				if ("forgetpwd".equals(cmd.getCmd())) {
 					oos1 = new ObjectOutputStream(socket.getOutputStream());
 				}
 				
-				//ÓÃ»§ÏÂÏß
-				if("logout".equals(cmd.getCmd())) {
-					//
-				}
-				
+				//ç”¨æˆ·ä¸‹çº¿
+//				if("logout".equals(cmd.getCmd())) {
+//					//
+//				}
+				//è¿™ä¸¤ä¸ªå†³å®šäº†å‘½ä»¤å¯¹è±¡å›ä¼ è¿˜æ˜¯è½¬å‘
 				if(oos1 != null) {
 					oos1.writeObject(cmd);	
 				}
@@ -151,84 +189,118 @@ public class ServerThread extends Thread{
 		}
 	}
 	
-	//´¦Àí¿Í»§¶Ë·¢À´µÄÃüÁî
+	
+	
+	/*
+	 * execute(CommandTranser cmd)
+	 * 	|----login
+	 * 	|----register
+	 * 	|----requeste_add_friend,accept_add_friend,refuse_to_add
+	 * 	|----request_send_file,refuse_send_file,accept_send_file
+	 * 	|----message
+	 * 	|----WordChat
+	 * 	|----changepwd
+	 */
+	
+	
 	private CommandTranser execute(CommandTranser cmd) {
 		
-		//µÇÂ¼ÇëÇó
+		//ç™»å½•è¯·æ±‚
 		if("login".equals(cmd.getCmd())) {
 			UserService userservice = new UserService();
 			User user = (User)cmd.getData();
 			cmd.setFlag(userservice.checkUser(user));
-			//Èç¹ûµÇÂ½³É¹¦£¬½«¸Ã¿Í»§¶Ë¼ÓÈëÒÑ¾­Á¬½Ó³É¹¦µÄmap¼¯ºÏÀïÃæ ²¢ÇÒ¿ªÆô´ËÓÃ»§µÄ½ÓÊÜÏß³Ì
+			//å¦‚æœç™»é™†æˆåŠŸï¼Œå°†è¯¥å®¢æˆ·ç«¯åŠ å…¥å·²ç»è¿æ¥æˆåŠŸçš„mapé›†åˆé‡Œé¢ å¹¶ä¸”å¼€å¯æ­¤ç”¨æˆ·çš„æ¥å—çº¿ç¨‹
 			if(cmd.isFlag()) {
-				// ½«¸ÃÏß³Ì¼ÓÈëÁ¬½Ó³É¹¦µÄmap¼¯ºÏ
+				// å°†è¯¥çº¿ç¨‹åŠ å…¥è¿æ¥æˆåŠŸçš„mapé›†åˆ
 				SocketEntity socketEntity = new SocketEntity();
 				socketEntity.setName(cmd.getSender());
 				socketEntity.setSocket(socket);
 				SocketList.addSocket(socketEntity);
 				
-				//´ÓÊı¾İ¿â»ñÈ¡ÆäºÃÓÑÁĞ±í²¢½«ÆäºÃÓÑÁĞ±í·¢ËÍÖÁ¿Í»§¶Ë
+				//ä»æ•°æ®åº“è·å–å…¶å¥½å‹åˆ—è¡¨å¹¶å°†å…¶å¥½å‹åˆ—è¡¨å‘é€è‡³å®¢æˆ·ç«¯
 				cmd.setData(userservice.getFriendsList(user));
-				cmd.setResult("µÇÂ½³É¹¦");
+				cmd.setResult("ç™»é™†æˆåŠŸ");
 			} else {
-				cmd.setResult("ÃÜÂë´íÎó");
+				cmd.setResult("å¯†ç é”™è¯¯");
 			}
 		}
 		
-		//×¢²áÇëÇó
+		//æ³¨å†Œè¯·æ±‚
 		if("register".equals(cmd.getCmd())) {
 			UserService userservice = new UserService();
 			User user = (User)cmd.getData();
 			cmd.setFlag(userservice.registerUser(user));
-			//Èç¹û×¢²á³É¹¦
+			//å¦‚æœæ³¨å†ŒæˆåŠŸ
 			if(cmd.isFlag()) {
 				SocketEntity socketEntity = new SocketEntity();
 				socketEntity.setName(cmd.getSender());
 				socketEntity.setSocket(socket);
 				SocketList.addSocket(socketEntity);
 				cmd.setData(userservice.getFriendsList(user));
-				//¸Õ×¢²áµÄ¿Ï¶¨Ã»ÓĞºÃÓÑ 
-				cmd.setResult("×¢²á³É¹¦");
+				//åˆšæ³¨å†Œçš„è‚¯å®šæ²¡æœ‰å¥½å‹ 
+				cmd.setResult("æ³¨å†ŒæˆåŠŸ");
 			} else {
-				cmd.setResult("×¢²áÊ§°Ü¿ÉÄÜ¸ÃÓÃ»§ÒÑ´æÔÚ");
+				cmd.setResult("æ³¨å†Œå¤±è´¥å¯èƒ½è¯¥ç”¨æˆ·å·²å­˜åœ¨");
 			}
 		}
 		
-		//ĞŞ¸Ä×ÊÁÏÇëÇó ¹¦ÄÜÔİÎ´ÊµÏÖ
-		if("changeInfo".equals(cmd.getCmd())) {
-			UserService userservice = new UserService();
-			User user = (User)cmd.getData();
-			cmd.setFlag(userservice.changeInfo(user));
-			if(cmd.isFlag()) {
-				cmd.setResult("ĞŞ¸ÄĞÅÏ¢³É¹¦");
-			} else {
-				cmd.setResult("ĞŞ¸ÄĞÅÏ¢Ê§°Ü");
-			}
-		}
+
 		
-		//Ìí¼ÓºÃÓÑ
+		//æ·»åŠ å¥½å‹
 		if("requeste_add_friend".equals(cmd.getCmd())) {
-			//¼ì²éÓÃ»§ÊÇ·ñÔÚÏß
+			//æ£€æŸ¥ç”¨æˆ·æ˜¯å¦åœ¨çº¿
 			if(SocketList.getSocket(cmd.getReceiver()) != null) {
 				cmd.setFlag(true);
-				cmd.setResult("¶Ô·½ÊÕµ½ÁËÄúµÄºÃÓÑÇëÇó");
+				cmd.setResult("å¯¹æ–¹æ”¶åˆ°äº†æ‚¨çš„å¥½å‹è¯·æ±‚");
 			} else {
 				cmd.setFlag(false);
-				cmd.setResult("µ±Ç°ÓÃ»§²»ÔÚÏß»òÕß¸ÄÓÃ»§²»´æÔÚ");
+				cmd.setResult("å½“å‰ç”¨æˆ·ä¸åœ¨çº¿æˆ–è€…æ”¹ç”¨æˆ·ä¸å­˜åœ¨");
+			}
+		}
+		//å‘é€æ–‡ä»¶è¯·æ±‚
+		if("request_send_file".equals(cmd.getCmd())){
+			if(SocketList.getSocket(cmd.getReceiver()) != null){
+				cmd.setFlag(true);
+				cmd.setResult("å¯¹æ–¹æ”¶åˆ°äº†æ‚¨çš„å‘é€æ–‡ä»¶è¯·æ±‚");
+			}else{
+				cmd.setFlag(false);
+				cmd.setResult("å½“å‰ç”¨æˆ·ä¸åœ¨çº¿æˆ–è€…è¯¥ç”¨æˆ·ä¸å­˜åœ¨");
+			}
+		}
+		//æ‹’ç»å‘é€æ–‡ä»¶è¯·æ±‚
+		if("refuse_send_file".equals(cmd.getCmd())){
+			if(SocketList.getSocket(cmd.getReceiver()) != null){
+				cmd.setFlag(true);
+				cmd.setResult("å¯¹æ–¹æ‹’ç»äº†æ‚¨çš„å‘é€æ–‡ä»¶è¯·æ±‚");
+			}else{
+				cmd.setFlag(false);
+				cmd.setResult("å½“å‰ç”¨æˆ·ä¸åœ¨çº¿æˆ–è€…è¯¥ç”¨æˆ·ä¸å­˜åœ¨");
+			}
+		}
+		//æ¥å—å‘é€æ–‡ä»¶è¯·æ±‚
+		if("accept_send_file".equals(cmd.getCmd())){
+			if(SocketList.getSocket(cmd.getReceiver()) != null){
+				cmd.setFlag(true);
+				cmd.setResult("å¯¹æ–¹æ¥å—äº†æ‚¨çš„å‘é€æ–‡ä»¶è¯·æ±‚");
+			}else{
+				cmd.setFlag(false);
+				cmd.setResult("å½“å‰ç”¨æˆ·ä¸åœ¨çº¿æˆ–è€…è¯¥ç”¨æˆ·ä¸å­˜åœ¨");
 			}
 		}
 		
-		//Í¬ÒâÌí¼ÓºÃÓÑÇëÇó
+		//åŒæ„æ·»åŠ å¥½å‹è¯·æ±‚
 		if("accept_add_friend".equals(cmd.getCmd())) {
 			UserService userservice = new UserService();
 			cmd.setFlag(userservice.addFriend(cmd.getReceiver(), cmd.getSender()));
 			if(cmd.isFlag()) {
-				cmd.setResult("ºÃÓÑÌí¼Ó³É¹¦ÇëÖØĞÂµÇÂ½Ë¢ĞÂ");
-			} else {
-				cmd.setResult("·şÎñÆ÷¹ÊÕÏµ¼ÖÂÌí¼ÓºÃÓÑÊ§°Ü»òÕßÄúÃÇÒÑ¾­ÎªºÃÓÑ");
+				cmd.setResult("å¥½å‹æ·»åŠ æˆåŠŸè¯·é‡æ–°ç™»é™†åˆ·æ–°");
+			}else{
+				cmd.setResult("æœåŠ¡å™¨æ•…éšœå¯¼è‡´æ·»åŠ å¥½å‹å¤±è´¥æˆ–è€…æ‚¨ä»¬å·²ç»ä¸ºå¥½å‹");
 			}
 		} 
 		
+		//æ›´æ–°å¥½å‹åˆ—è¡¨ æœªå®ç°
 //		if("updatefriendlist".equals(cmd.getCmd())) {
 //			UserService userservice = new UserService();
 //			User user = (User)cmd.getData();
@@ -239,52 +311,60 @@ public class ServerThread extends Thread{
 //				cmd.setData(user);
 //			}
 //		}
+	
+		//ä¿®æ”¹èµ„æ–™è¯·æ±‚ æœªå®ç°
+//		if("changeInfo".equals(cmd.getCmd())) {
+//			UserService userservice = new UserService();
+//			User user = (User)cmd.getData();
+//			cmd.setFlag(userservice.changeInfo(user));
+//			if(cmd.isFlag()) {
+//				cmd.setResult("ä¿®æ”¹ä¿¡æ¯æˆåŠŸ");
+//			} else {
+//				cmd.setResult("ä¿®æ”¹ä¿¡æ¯å¤±è´¥");
+//			}
+//		}
 		
-		//¾Ü¾øÌí¼ÓºÃÓÑ
+		//æ‹’ç»æ·»åŠ å¥½å‹
 		if("refuse_to_add".equals(cmd.getCmd())) {
-			//¼ì²éÊÇ·ñÔÚÏß
+			//æ£€æŸ¥æ˜¯å¦åœ¨çº¿
 			if(SocketList.getSocket(cmd.getReceiver()) != null) {
 				cmd.setFlag(true);
-				cmd.setResult("Äú±» " + cmd.getSender() +  " ¾Ü¾øÁË");
+				cmd.setResult("æ‚¨è¢« " + cmd.getSender() +  " æ‹’ç»äº†");
 			} else {
 				cmd.setFlag(false);
-				cmd.setResult("¶Ô·½²»ÔÚÏß²»ÖªµÀÄã¾Ü¾øÁËËûµÄºÃÓÑÇëÇó");
+				cmd.setResult("å¯¹æ–¹ä¸åœ¨çº¿");
 			}
 		}
 		
-		//·¢ËÍÏûÏ¢Ö¸Áî
+		//å‘é€æ¶ˆæ¯æŒ‡ä»¤
 		if("message".equals(cmd.getCmd())) {
-			//¼ì²éÊÇ·ñÔÚÏß
+			//æ£€æŸ¥æ˜¯å¦åœ¨çº¿
 			if(SocketList.getSocket(cmd.getReceiver()) != null) {
-				//System.out.println("ÉñÆæ");
 				cmd.setFlag(true);
-				//cmd.setResult("¶Ô·½³É¹¦ÊÕµ½ÄúµÄÏûÏ¢");
 			} else {
-				//System.out.println("ÉñÆæ°¡");
 				cmd.setFlag(false);
-				cmd.setResult("µ±Ç°ÓÃ»§²»ÔÚÏß");
+				cmd.setResult("å½“å‰ç”¨æˆ·ä¸åœ¨çº¿");
 			}
 		}
 		
 		if("WordChat".equals(cmd.getCmd())) {
 			cmd.setFlag(true);
 		}
-		//Íü¼ÇÃÜÂëÖ¸Áî ÕâÀï×îºóÒª½²ÓÃ»§µÄÎÊÌâºÍ´ğ°¸·µ»Ø
+		//å¿˜è®°å¯†ç æŒ‡ä»¤ 
 		if("forgetpwd".equals(cmd.getCmd())) {
 			UserService userservice = new UserService();
 			User user = (User)cmd.getData();
 			user = userservice.getUser(user);
-			//Èç¹ûÓÃ»§´æÔÚ
+			//å¦‚æœç”¨æˆ·å­˜åœ¨
 			if(user != null ) {
-				cmd.setResult("²éÑ¯³É¹¦");
+				cmd.setResult("æŸ¥è¯¢æˆåŠŸ");
 				cmd.setData(user);
 				cmd.setFlag(true);
 			} else {
-				cmd.setResult("ÓÃ»§¿ÉÄÜ²»´æÔÚ");
+				cmd.setResult("ç”¨æˆ·ä¸å­˜åœ¨");
 				cmd.setFlag(false);
 			}
 		}	
-		
 		
 		if ("changepwd".equals(cmd.getCmd())) {
 			UserService userservice = new UserService();
@@ -293,9 +373,9 @@ public class ServerThread extends Thread{
 			System.out.println("there 111 ");
 			System.out.println(user.getUsername());
 			if(cmd.isFlag()) {
-				cmd.setResult("ĞŞ¸ÄÃÜÂë³É¹¦");
+				cmd.setResult("ä¿®æ”¹å¯†ç æˆåŠŸ");
 			}else {
-				cmd.setResult("ĞŞ¸ÄÃÜÂëÊ§°Ü");
+				cmd.setResult("ä¿®æ”¹å¯†ç å¤±è´¥");
 			}
 		}
 		

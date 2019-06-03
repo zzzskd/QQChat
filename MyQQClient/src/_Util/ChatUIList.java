@@ -1,35 +1,29 @@
-package _Util;
-
+ï»¿package _Util;
 import java.util.HashMap;
 
 import Entity.ChatUIEntity;
 import Frame.ChatUI;
 
-/**
-* @author zzz
-* @version ´´½¨Ê±¼ä£º2018Äê7ÔÂ6ÈÕ ÏÂÎç4:56:18
-*  ´°¿Ú¿ØÖÆÆ÷ Ã¿¸öÁÄÌì½çÃæ¶¼ÔÚÕâÀï"×¢²á"
+/* è®°å½•å®¢æˆ·ç«¯æ‰“å¼€çš„èŠå¤©é¡µé¢ï¼Œå¤„ç†ä¸å¥½å‹çš„æ¶ˆæ¯å¼¹çª—
+*  çª—å£æ§åˆ¶å™¨ æ¯ä¸ªèŠå¤©ç•Œé¢éƒ½åœ¨è¿™é‡Œ"æ³¨å†Œ"
 */
 public class ChatUIList {
-	private static HashMap<String, ChatUI> map = new HashMap<String, ChatUI>();
+	private static HashMap<String, ChatUI> map = new HashMap<String, ChatUI>();		//å®¹å™¨
 	
-	//ÏòmapÀïÃæ¡°×¢²á¡±
-	public static void addChatUI(ChatUIEntity chatUIEntity) {
+	
+	
+	
+	
+	public static void addChatUI(ChatUIEntity chatUIEntity) {						//å‘mapé‡Œé¢â€œæ³¨å†Œâ€
 		map.put(chatUIEntity.getName(), chatUIEntity.getChatUI());	
 	}
-	
-	//¹Ø±Õ´°¿ÚºóÒªÉ¾³ı
-	public static void deletChatUI(String chatUIName) {
-		
-		//É¾³ıÖ®Ç°²é¿´ÊÇ·ñÓĞÕâ¸ö´°¿Ú, ·ÀÖ¹³ö´í
+	public static void deletChatUI(String chatUIName) {								//å…³é—­çª—å£åè¦ä»mapé‡Œåˆ é™¤è¿™ä¸ªçª—å£
+		//åˆ é™¤ä¹‹å‰æŸ¥çœ‹æ˜¯å¦æœ‰è¿™ä¸ªçª—å£, é˜²æ­¢å‡ºé”™
 		if(map.get(chatUIName) != null) {
 			map.remove(chatUIName);
 		}
-		
 	}
-	
-	//Í¨¹ıêÇ³Æ·µ»Ø´°¿Ú
-	public static ChatUI getChatUI(String name) {
+	public static ChatUI getChatUI(String name) {									//é€šè¿‡æ˜µç§°è¿”å›çª—å£å°è£…ä½“
 		return map.get(name);
 	}
 }
