@@ -20,11 +20,12 @@ import UserSocket.ChatTread;
 import UserSocket.Client;
 import _Util.CommandTranser;
 
-/**
-* @author zzz
-* @version 创建时间：2018年7月7日 下午3:40:36
+/**忘记密码窗口
+*
 */
 public class ForgetUI extends JFrame implements ActionListener, FocusListener{
+	
+	
 	private static final long serialVersionUID = 1L;
 	private JLabel upper_N, user_name_txt, user_pwd_txt, user_ques_txt, user_ans_txt, user_ques; //显示文字用
 	private JButton forget_button_S, submit_button;
@@ -34,12 +35,16 @@ public class ForgetUI extends JFrame implements ActionListener, FocusListener{
 	private User user;
 	private Client client; //用于查询数据库中是否有该用户
 	
+	
+	
+	
+	
 	public ForgetUI(MainFrame mainFrame) {
 		this.mainFrame = mainFrame;
-		//页面构造
+		//页面内部元素构造
 		init();
 		//合成整体
-		add(upper_N);
+//		add(upper_N);
 		add(user_name_txt);
 		add(user_name);
 		add(submit_button);
@@ -61,15 +66,13 @@ public class ForgetUI extends JFrame implements ActionListener, FocusListener{
 		setResizable(false);
 		setVisible(true);		
 	}
-	
 	public void init() {
 		//上方图片部分构造 上 即为 北
-		ImageIcon upper_image = new ImageIcon("image/forget_background_image.png");
-		upper_image.setImage(upper_image.getImage().getScaledInstance(270, 170,
-				Image.SCALE_DEFAULT));
-		upper_N = new JLabel(upper_image);
-		upper_N.setLocation(0,0); //确定位置
-		upper_N.setSize(270, 170); //设置大小
+//		ImageIcon upper_image = new ImageIcon("image/forget_background_image.png");
+//		upper_image.setImage(upper_image.getImage().getScaledInstance(270, 170,Image.SCALE_DEFAULT));			
+//		upper_N = new JLabel(upper_image);		
+//		upper_N.setLocation(0,0); //确定位置
+//		upper_N.setSize(270, 170); //设置大小
 		
 		
 		//中间部分内容 绝对位置
@@ -132,7 +135,11 @@ public class ForgetUI extends JFrame implements ActionListener, FocusListener{
 			
 	}
 	
-	public void actionPerformed(ActionEvent e) {
+	
+	
+	
+	
+	public void actionPerformed(ActionEvent e) {							//按钮的点击事件用actionPerforme
 		
 		if(e.getSource() == submit_button) {
 			String username = user_name.getText().trim();
@@ -155,7 +162,7 @@ public class ForgetUI extends JFrame implements ActionListener, FocusListener{
 					if(cmd.isFlag()) {
 						user = (User)cmd.getData();
 						user_ques.setText(user.getUserQuestion());
-						JOptionPane.showMessageDialog(null, "查询成功"); //this 跟 null很迷
+						JOptionPane.showMessageDialog(null, "查询成功"); 		//this 跟 null很迷
 					}else {
 						JOptionPane.showMessageDialog(null, cmd.getResult());
 						//账号输入框置空
@@ -246,7 +253,11 @@ public class ForgetUI extends JFrame implements ActionListener, FocusListener{
 		}
 	}
 	
-	//鼠标的点击或移动之类的用focuslistener 这里不知道为啥没变色 （哭
+	
+	
+	
+	
+	/////////////////////////////////////////////////////////鼠标的点击或移动之类的用focuslistener 不知道为啥没变色
 	@Override
 	public void focusGained(FocusEvent e) {
 		//处理账号输入框
@@ -282,7 +293,7 @@ public class ForgetUI extends JFrame implements ActionListener, FocusListener{
 	    	user_pwd.setForeground(Color.gray);
 	    }
 	    
-	  //处理问题输入框
+	    //处理问题输入框
 	    if(e.getSource() == user_ques){
 	    	//user_ques.setForeground(Color.gray);
 	    }

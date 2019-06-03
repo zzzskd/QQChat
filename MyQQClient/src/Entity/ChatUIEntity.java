@@ -1,33 +1,40 @@
-package Entity;
-
+ï»¿package Entity;
 import Frame.ChatUI;
 
-/**
-* @author zzz
-* @version ´´½¨Ê±¼ä£º2018Äê7ÔÂ6ÈÕ ÏÂÎç4:54:42
+/*
+*
 */
 public class ChatUIEntity {
-	private ChatUI chatUI;
-	private String name;
+	private ChatUI chatUI;						//èŠå¤©æ¡†ä½“
+	private String name;						//èŠå¤©æ¡†æœ‰ä¸€ä¸ªåå­—ï¼Œä»¥ä¾¿æ£€ç´¢
+	
+	
+	
+	
+	
+	
 	
 	public ChatUIEntity() {
 		super();
-	}
-	
+	}	
 	public ChatUIEntity(ChatUI chatUI, String name) {
 		super();
 		this.chatUI = chatUI;
 		this.name = name;
 	}
 	
+	
+	
+	
+	
+	
+	
 	public ChatUI getChatUI() {
 		return chatUI;
 	}
-	
 	public void setChatUI(ChatUI chatUI) {
 		this.chatUI = chatUI;
 	}
-	
 	public String getName() {
 		return name;
 	}

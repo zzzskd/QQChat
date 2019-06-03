@@ -31,19 +31,29 @@ import Entity.User;
 import UserSocket.Client;
 import _Util.ChatUIList;
 import _Util.CommandTranser;
-
-
-/**
-* @author zzz
-* @version 创建时间：2018年7月4日 上午10:15:48
+	/*
+	 * 	又了解了一下 流式布局 和 边框（界）布局 分别见参考
+	 * 	https://blog.csdn.net/liujun13579/article/details/7771191
+	 *  https://blog.csdn.net/liujun13579/article/details/7772215
+	 *  https://www.cnblogs.com/qingyundian/p/8012527.html
+	 */
+/**好友列表页面
+*
 */
 public class FriendsUI extends JFrame implements ActionListener {
+	
 	private static final long serialVersionUID = 1L;
-	private User owner;// 当前用户
-	private Client client;// 客户端
+	private User owner;						// 当前用户(包含诸多信息)
+	private Client client;					// 客户端
     private JButton changepwd_bt;
     private JButton addfriends_bt;
     private JButton world_bt;
+    
+    
+    
+    
+    
+    
     
 	public FriendsUI(User owner, Client client) {
 		this.owner = owner;
@@ -61,14 +71,6 @@ public class FriendsUI extends JFrame implements ActionListener {
 		setVisible(true);
 		
 	}
-
-	// 界面
-	/*
-	 * 又了解了一下 流式布局 和 边框（界）布局 分别见参考
-	 * https://blog.csdn.net/liujun13579/article/details/7771191
-	 *  https://blog.csdn.net/liujun13579/article/details/7772215
-	 */
-	//这里主体参考的 https://www.cnblogs.com/qingyundian/p/8012527.html
 	private void init() {
 		// TODO Auto-generated method stub
 		//登录成功后上部分，包括头像， 用户名， 个性签名， 这里个性签名固定
@@ -91,7 +93,7 @@ public class FriendsUI extends JFrame implements ActionListener {
 		upper_N_Cen.add(upper_N_Cen_Cen, BorderLayout.CENTER);
 		
 		final JLabel upper_N_Cen_S = new JLabel(); // 个性签名部分
-		upper_N_Cen_S.setText("Welcome to SDUST");
+		upper_N_Cen_S.setText("hello world");
 		upper_N_Cen.add(upper_N_Cen_S, BorderLayout.SOUTH);
 		
 		//登陆成功后下部分 修改密码, 添加好友
@@ -150,7 +152,7 @@ public class FriendsUI extends JFrame implements ActionListener {
 
 		}
 		
-		//世界喊话部分
+		//全员群聊部分
 		ImageIcon world_image = new ImageIcon("image/friendsui/world.jpg");
 		world_image.setImage(world_image.getImage().getScaledInstance(245, 493, Image.SCALE_DEFAULT));
 		world_bt = new JButton();
@@ -165,8 +167,8 @@ public class FriendsUI extends JFrame implements ActionListener {
 		
 		final JScrollPane jsp = new JScrollPane(friend_pal);
 		jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		jtp.addTab("我的好友", jsp);
-		jtp.addTab("世界喊话", world_propaganda);
+		jtp.addTab("好友", jsp);
+		jtp.addTab("群聊", world_propaganda);
 		
 		//窗口关闭事件
 		addWindowListener(new WindowAdapter() {
@@ -191,20 +193,20 @@ public class FriendsUI extends JFrame implements ActionListener {
 	}
 	
 
+	
+	
+	
+	
+	
+	
 	@Override
-	public void actionPerformed(ActionEvent e){
-		//点击修改密码 或 添加好友
+	public void actionPerformed(ActionEvent e){						//监听修改密码 或 添加好友按钮 或全员群聊
 		
-		//修改密码
-		if(e.getSource() == changepwd_bt){
-			
-			new ChangePwdUI(owner, client);
-			
+		if(e.getSource() == changepwd_bt){						//调出修改密码页面
+			new ChangePwdUI(owner, client);			
 		}
 
-		//添加好友页面
-		if(e.getSource() == addfriends_bt){
-			
+		if(e.getSource() == addfriends_bt){						//召唤出添加好友页面
 			new AddFriendUI(owner, client);
 		}
 
@@ -212,6 +214,7 @@ public class FriendsUI extends JFrame implements ActionListener {
 			ChatUI chatUI = ChatUIList.getChatUI("WorldChat");
 			if(chatUI == null) {
 				chatUI = new ChatUI("WorldChat", "WorldChat", owner.getUsername(), client);
+				chatUI.send_file.setEnabled(false);
 				ChatUIEntity chatUIEntity = new ChatUIEntity();
 				chatUIEntity.setName("WorldChat");
 				chatUIEntity.setChatUI(chatUI);
@@ -221,20 +224,17 @@ public class FriendsUI extends JFrame implements ActionListener {
 			}
 		}
 	}
-	
-	class MyMouseListener extends MouseAdapter{
-		
+	class MyMouseListener extends MouseAdapter{						//监听鼠标动作
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			//双击我的好友弹出与该好友的聊天框
-			if(e.getClickCount() == 2) {
-				JLabel label = (JLabel)e.getSource(); //getSource()返回的是Object,
+			
+			if(e.getClickCount() == 2) {							//双击我的好友弹出与该好友的聊天框
+				JLabel label = (JLabel)e.getSource(); 				//getSource()返回的是Object,
 				
-				//通过label中的getText获取聊天对象
-				String friendname = label.getText().trim();
+				String friendname = label.getText().trim();			//通过label中的getText获取聊天对象
 				//System.out.println(friendname + "*");
-				//查看与该好友是否创建过窗口
-				ChatUI chatUI = ChatUIList.getChatUI(friendname);
+				
+				ChatUI chatUI = ChatUIList.getChatUI(friendname);	//查看与该好友是否创建过窗口
 				if(chatUI == null) {
 					chatUI = new ChatUI(owner.getUsername(), friendname, owner.getUsername(), client);
 					ChatUIEntity chatUIEntity = new ChatUIEntity();
@@ -242,7 +242,7 @@ public class FriendsUI extends JFrame implements ActionListener {
 					chatUIEntity.setChatUI(chatUI);
 					ChatUIList.addChatUI(chatUIEntity);
 				} else {
-					chatUI.show(); //如果以前创建过仅被别的窗口掩盖了 就重新显示
+					chatUI.show(); 									//如果以前创建过仅被别的窗口掩盖了 就重新显示
 				}
 				
 			}	

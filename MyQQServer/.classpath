@@ -7,5 +7,8 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/sql_for_myqqserver"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="JDBC"/>
+	<classpathentry kind="lib" path="JDBC/mysql-connector-java-5.1.46-bin.jar"/>
+	<classpathentry kind="lib" path="JDBC/mysql-connector-java-5.1.46.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

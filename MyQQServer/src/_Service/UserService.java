@@ -1,4 +1,4 @@
-package _Service;
+ï»¿package _Service;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,17 +9,20 @@ import java.util.ArrayList;
 import Entity.User;
 import _Util.DBHelper;
 
-/**
-* @author zzz
-* @version ´´½¨Ê±¼ä£º2018Äê7ÔÂ5ÈÕ ÏÂÎç1:53:09
+/**serServiceç±»è´Ÿè´£å¤„ç†å…·ä½“çš„å’Œæ•°æ®åº“äº¤äº’çš„å†…å®¹ï¼Œ
+ * å¦‚æŸ¥è¯¢ç”¨æˆ·è´¦å·å’Œå¯†ç æ˜¯å¦åŒ¹é…ã€
+ * ä¿®æ”¹å¯†ç ã€
+ * æ³¨å†Œç”¨æˆ·ã€
+ * å¿˜è®°å¯†ç ã€
+ * æ·»åŠ å¥½å‹ç­‰æ“ä½œã€‚
 */
 public class UserService {
 	
-	//loginÑéÖ¤ÕËºÅÃÜÂë
+	//loginéªŒè¯è´¦å·å¯†ç 
 	public boolean checkUser(User user) {
-		PreparedStatement stmt = null; //PreparedStatementÊÇÓÃÀ´Ö´ĞĞSQL²éÑ¯Óï¾äµÄAPIÖ®Ò»
-		Connection conn = null; //ÓëÌØ¶¨Êı¾İ¿âµÄÁ¬½Ó£¨»á»°£©¡£ÔÚÁ¬½ÓÉÏÏÂÎÄÖĞÖ´ĞĞ SQL Óï¾ä²¢·µ»Ø½á¹û
-		ResultSet rs = null; //ÊÇÊı¾İÖĞ²éÑ¯½á¹û·µ»ØµÄÒ»ÖÖ¶ÔÏó£¬¿ÉÒÔËµ½á¹û¼¯ÊÇÒ»¸ö´æ´¢²éÑ¯½á¹ûµÄ¶ÔÏó£¬µ«ÊÇ½á¹û¼¯²¢²»½ö½ö¾ßÓĞ´æ´¢µÄ¹¦ÄÜ£¬ËûÍ¬Ê±»¹¾ßÓĞ²Ù×İÊı¾İµÄ¹¦ÄÜ£¬¿ÉÄÜÍê³É¶ÔÊı¾İµÄ¸üĞÂµÈ
+		PreparedStatement stmt = null; 	//PreparedStatementæ˜¯ç”¨æ¥æ‰§è¡ŒSQLæŸ¥è¯¢è¯­å¥çš„APIä¹‹ä¸€
+		Connection conn = null; 		//ä¸ç‰¹å®šæ•°æ®åº“çš„è¿æ¥ï¼ˆä¼šè¯ï¼‰ã€‚åœ¨è¿æ¥ä¸Šä¸‹æ–‡ä¸­æ‰§è¡Œ SQL è¯­å¥å¹¶è¿”å›ç»“æœ
+		ResultSet rs = null; 			//æ˜¯æ•°æ®ä¸­æŸ¥è¯¢ç»“æœè¿”å›çš„ä¸€ç§å¯¹è±¡ï¼Œå¯ä»¥è¯´ç»“æœé›†æ˜¯ä¸€ä¸ªå­˜å‚¨æŸ¥è¯¢ç»“æœçš„å¯¹è±¡ï¼Œä½†æ˜¯ç»“æœé›†å¹¶ä¸ä»…ä»…å…·æœ‰å­˜å‚¨çš„åŠŸèƒ½ï¼Œä»–åŒæ—¶è¿˜å…·æœ‰æ“çºµæ•°æ®çš„åŠŸèƒ½ï¼Œå¯èƒ½å®Œæˆå¯¹æ•°æ®çš„æ›´æ–°ç­‰
 		conn = DBHelper.getConnection();
 		String sql = "select * from tb_user where user_name =? and user_pwd =?";
 		try {
@@ -28,7 +31,7 @@ public class UserService {
 			stmt.setString(2, user.getUserpwd());
 			rs = stmt.executeQuery();
 			if(rs.next()) {
-				
+				//èƒ½æŸ¥åˆ°è¯´æ˜ç”¨æˆ·å·²ç»æ³¨å†Œ
 				return true;
 			}
 			
@@ -49,22 +52,22 @@ public class UserService {
 		return false;
 	}
 	
-	//µÇÂ½ºóÏò¿Í»§¶Ë·¢ËÍÆäºÃÓÑÁĞ±í
+	//ç™»é™†åå‘å®¢æˆ·ç«¯å‘é€å…¶å¥½å‹åˆ—è¡¨,è£…åœ¨ä¸€ä¸ªArrayListé‡Œé¢è¿›è¡Œä¼ è¾“
 	public User getFriendsList(User user) {
 		PreparedStatement stmt = null; 
 		Connection conn = null; 
 		ResultSet rs = null; 
 		conn = DBHelper.getConnection();
 		String sql = "select * from " + user.getUsername() + "_friends";
-		ArrayList<String> friendslist = new ArrayList<String>(); //ÕâÀï¼ÙÉèºÃÓÑ²»³¬¹ı20¸ö
+		ArrayList<String> friendslist = new ArrayList<String>(); //è¿™é‡Œå‡è®¾å¥½å‹ä¸è¶…è¿‡20ä¸ª
 		try {
 			
 			stmt = conn.prepareStatement(sql);
-			//stmt.setString(1, user.getUsername() + "_friends"); ÕâÑùµÄ»°»á±¨´í
+			//stmt.setString(1, user.getUsername() + "_friends"); è¿™æ ·çš„è¯ä¼šæŠ¥é”™
 			rs = stmt.executeQuery();
 			int count = 0;
 			while(rs.next()) {
-				friendslist.add(rs.getString(2));	//»ñÈ¡ºÃÓÑname
+				friendslist.add(rs.getString(2));	//è·å–å¥½å‹name
 				count++;
 			}
 			user.setFriendsNum(count);
@@ -88,9 +91,9 @@ public class UserService {
 		return user;
 	}
 	
-	//ÓÃ»§×¢²á
+	//ç”¨æˆ·æ³¨å†Œ
 	public boolean registerUser(User user) {
-		PreparedStatement stmt1 = null; //PreparedStatementÊÇÓÃÀ´Ö´ĞĞSQL²éÑ¯Óï¾äµÄAPIÖ®Ò»
+		PreparedStatement stmt1 = null; //PreparedStatementæ˜¯ç”¨æ¥æ‰§è¡ŒSQLæŸ¥è¯¢è¯­å¥çš„APIä¹‹ä¸€
 		PreparedStatement stmt2 = null;
 		PreparedStatement stmt3 = null;
 		Connection conn = null; 
@@ -106,30 +109,30 @@ public class UserService {
 			stmt1.setString(1, user.getUsername());
 			rs = stmt1.executeQuery();
 			if(rs.next()) {
-				System.out.println("¸ÃÓÃ»§ÒÑ´æÔÚ" + user.getUsername() + "***");
-				//ÓÃ»§ÒÑ±»×¢²á
+				System.out.println("è¯¥ç”¨æˆ·å·²å­˜åœ¨" + user.getUsername() + "***");
+				//ç”¨æˆ·å·²è¢«æ³¨å†Œ
 				return false;
 			}
 			else {
-				System.out.println("¸ÃÓÃ»§²»´æÔÚ" + user.getUsername() + "***");
-				//ÏòÓÃ»§±í²åÈëÊı¾İ
+				System.out.println("è¯¥ç”¨æˆ·ä¸å­˜åœ¨" + user.getUsername() + "***");
+				//å‘ç”¨æˆ·è¡¨æ’å…¥æ•°æ®
 				stmt2 = conn.prepareStatement(insertusersql);
 				stmt2.setString(1, user.getUsername());
 				stmt2.setString(2, user.getUserpwd());
 				stmt2.setString(3, user.getUserQuestion());
 				stmt2.setString(4, user.getUserAnswer());
 				insertFlag = stmt2.executeUpdate();
-				System.out.println("Ïò±íÖĞ²åÈëÊı¾İ" + user.getUsername() + "***" + insertFlag);
-				//´´½¨ºÃÓÑ±í
+				System.out.println("å‘è¡¨ä¸­æ’å…¥æ•°æ®" + user.getUsername() + "***" + insertFlag);
+				//åˆ›å»ºå¥½å‹è¡¨
 				stmt3 = conn.prepareStatement(creatfriendstabsql);
 				creatFlag = stmt3.executeUpdate();
 				
-				System.out.println("´´½¨±í" + user.getUsername() + "***" + creatFlag);
+				System.out.println("åˆ›å»ºè¡¨" + user.getUsername() + "***" + creatFlag);
 				if(insertFlag == 1) {
 					return true;
 				}
 				
-				System.out.println("²»¸ßĞË" + user.getUsername() + "***");
+				//System.out.println("ä¸é«˜å…´" + user.getUsername() + "***");
 				//return true;
 			}
 			
@@ -156,7 +159,7 @@ public class UserService {
 		return false;
 	}
 	
-	//Ìí¼ÓºÃÓÑ
+	//æ·»åŠ å¥½å‹
 	public boolean addFriend(String sender, String receiver) {
 		PreparedStatement stmt1 = null; 
 		PreparedStatement stmt2 = null; 
@@ -179,7 +182,7 @@ public class UserService {
 				return true;
 			}
 			else {
-				//Ï£ÍûÄÜ²åÈë£¬ Èç¹û²åÈë²»³É¹¦µÄ»°£¬Ó¦¸Ã½«²åÈë³É¹¦µÄÉ¾³ı....ÕâÀï²»×ö´¦ÀíÁË
+				//å¸Œæœ›èƒ½æ’å…¥ï¼Œ å¦‚æœæ’å…¥ä¸æˆåŠŸçš„è¯ï¼Œåº”è¯¥å°†æ’å…¥æˆåŠŸçš„åˆ é™¤....è¿™é‡Œä¸åšå¤„ç†äº†
 			}
 			
 		} catch(SQLException e) {
@@ -199,17 +202,17 @@ public class UserService {
 		return false;
 	}
 	
-	//ĞŞ¸ÄĞÅÏ¢
+	//ä¿®æ”¹ä¿¡æ¯
 	public boolean changeInfo(User user) {
 		return false;
 	}
 	
-	//ĞŞ¸ÄÃÜÂë Íü¼ÇÃÜÂë
+	//ä¿®æ”¹å¯†ç  å¿˜è®°å¯†ç 
 	public boolean changePassword(User user) {
-		PreparedStatement stmt1 = null; //PreparedStatementÊÇÓÃÀ´Ö´ĞĞSQL²éÑ¯Óï¾äµÄAPIÖ®Ò»
-		PreparedStatement stmt2 = null; //PreparedStatementÊÇÓÃÀ´Ö´ĞĞSQL²éÑ¯Óï¾äµÄAPIÖ®Ò»
-		Connection conn = null; //ÓëÌØ¶¨Êı¾İ¿âµÄÁ¬½Ó£¨»á»°£©¡£ÔÚÁ¬½ÓÉÏÏÂÎÄÖĞÖ´ĞĞ SQL Óï¾ä²¢·µ»Ø½á¹û
-		ResultSet rs = null; //ÊÇÊı¾İÖĞ²éÑ¯½á¹û·µ»ØµÄÒ»ÖÖ¶ÔÏó£¬¿ÉÒÔËµ½á¹û¼¯ÊÇÒ»¸ö´æ´¢²éÑ¯½á¹ûµÄ¶ÔÏó£¬µ«ÊÇ½á¹û¼¯²¢²»½ö½ö¾ßÓĞ´æ´¢µÄ¹¦ÄÜ£¬ËûÍ¬Ê±»¹¾ßÓĞ²Ù×İÊı¾İµÄ¹¦ÄÜ£¬¿ÉÄÜÍê³É¶ÔÊı¾İµÄ¸üĞÂµÈ
+		PreparedStatement stmt1 = null; //PreparedStatementæ˜¯ç”¨æ¥æ‰§è¡ŒSQLæŸ¥è¯¢è¯­å¥çš„APIä¹‹ä¸€
+		PreparedStatement stmt2 = null; //PreparedStatementæ˜¯ç”¨æ¥æ‰§è¡ŒSQLæŸ¥è¯¢è¯­å¥çš„APIä¹‹ä¸€
+		Connection conn = null; //ä¸ç‰¹å®šæ•°æ®åº“çš„è¿æ¥ï¼ˆä¼šè¯ï¼‰ã€‚åœ¨è¿æ¥ä¸Šä¸‹æ–‡ä¸­æ‰§è¡Œ SQL è¯­å¥å¹¶è¿”å›ç»“æœ
+		ResultSet rs = null; //æ˜¯æ•°æ®ä¸­æŸ¥è¯¢ç»“æœè¿”å›çš„ä¸€ç§å¯¹è±¡ï¼Œå¯ä»¥è¯´ç»“æœé›†æ˜¯ä¸€ä¸ªå­˜å‚¨æŸ¥è¯¢ç»“æœçš„å¯¹è±¡ï¼Œä½†æ˜¯ç»“æœé›†å¹¶ä¸ä»…ä»…å…·æœ‰å­˜å‚¨çš„åŠŸèƒ½ï¼Œä»–åŒæ—¶è¿˜å…·æœ‰æ“çºµæ•°æ®çš„åŠŸèƒ½ï¼Œå¯èƒ½å®Œæˆå¯¹æ•°æ®çš„æ›´æ–°ç­‰
 		int updateFlag = 0;
 		conn = DBHelper.getConnection();
 		//String sql = "select * from tb_user where user_question =? and user_ans =?";
@@ -237,11 +240,9 @@ public class UserService {
 			try {
 				if(rs != null) {
 					rs.close();
-				}
-				if(stmt1 != null) {
+				}if(stmt1 != null) {
 					stmt1.close();
-				}
-				if(stmt2 != null) {
+				}if(stmt2 != null) {
 					stmt2.close();
 				}
 			} catch(SQLException e) {
@@ -251,8 +252,8 @@ public class UserService {
 		return false;
 	}
 	
-	//»ñµÃÓÃ»§µÄÏà¹ØĞÅÏ¢
-	public User getUser(User user) {
+	
+	public User getUser(User user) {								//è·å¾—ç”¨æˆ·çš„ç›¸å…³ä¿¡æ¯
 		PreparedStatement stmt1 = null; 
 		PreparedStatement stmt2 = null; 
 		Connection conn = null; 
@@ -260,7 +261,6 @@ public class UserService {
 		conn = DBHelper.getConnection();
 		String sql = "select * from tb_user where user_name =?";
 		try {
-			
 			stmt1 = conn.prepareStatement(sql);
 			stmt1.setString(1, user.getUsername());
 			rs = stmt1.executeQuery();
@@ -270,18 +270,15 @@ public class UserService {
 				user.setUserQuestion(rs.getString("user_question"));
 				return user; 
 			}
-			
 		} catch(SQLException e) {
 			e.printStackTrace();
 		} finally{
 			try {
 				if(rs != null) {
 					rs.close();
-				}
-				if(stmt1 != null) {
+				}if(stmt1 != null) {
 					stmt1.close();
-				}
-				if(stmt2 != null) {
+				}if(stmt2 != null) {
 					stmt2.close();
 				}
 			} catch(SQLException e) {

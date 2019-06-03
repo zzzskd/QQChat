@@ -1,25 +1,25 @@
-package _Util;
+ï»¿package _Util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-/**
-* @author zzz
-* @version ´´½¨Ê±¼ä£º2018Äê7ÔÂ5ÈÕ ÉÏÎç9:21:37
+/**è´Ÿè´£å’Œæ•°æ®åº“å»ºç«‹è¿æ¥
+ * å¹¶ä¸”è¿”å›ä¸€ä¸ªè¿æ¥å¯¹è±¡
+
 */
 public class DBHelper {
-	private static final String driver = "com.mysql.cj.jdbc.Driver";
+	private static final String driver = "com.mysql.jdbc.Driver";
+	//private static final String driver = "com.mysql.cj.jdbc.Driver";
 	private static final String url = "jdbc:mysql://localhost:3306/myqquser?&useSSL=false&serverTimezone=UTC";
 	private static final String username = "root";
-	private static final String password = "zzzz";
+	private static final String password = "621226";
 	private static Connection con = null;
 	
-	//¾²Ì¬´úÂë¸ºÔğ¼ÓÔØÇı¶¯
-	static {
+	
+	static {							//staticé™æ€ä»£ç è´Ÿè´£åŠ è½½é©±åŠ¨
 		try {
-			Class.forName(driver); //Class.forName(xxx.xx.xx)µÄ×÷ÓÃÊÇÒªÇóJVM²éÕÒ²¢¼ÓÔØÖ¸¶¨µÄÀà£¬Ò²¾ÍÊÇËµJVM»áÖ´ĞĞ¸ÃÀàµÄ¾²Ì¬´úÂë¶Î
-			
+			Class.forName(driver); 		//Class.forName(xxx.xx.xx)çš„ä½œç”¨æ˜¯è¦æ±‚JVMæŸ¥æ‰¾å¹¶åŠ è½½æŒ‡å®šçš„ç±»ï¼Œä¹Ÿå°±æ˜¯è¯´JVMä¼šæ‰§è¡Œè¯¥ç±»çš„é™æ€ä»£ç æ®µ
 		} catch(ClassNotFoundException e) {
 			e.printStackTrace();
 		}

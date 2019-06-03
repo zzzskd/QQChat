@@ -1,34 +1,35 @@
-package Entity;
+ï»¿package Entity;
 
 import java.net.Socket;
 
-/**
-* @author zzz
-* @version ´´½¨Ê±¼ä£º2018Äê7ÔÂ5ÈÕ ÏÂÎç2:35:00
+/**	
+ * å°†æ¯ä¸€ä¸ªsocketå–ä¸ªåå­—ä¾¿äºå¯»æ‰¾ï¼Œè¿™å°±æ˜¯SocketEntityçš„ä½œç”¨
+ * 	|---socket
+ * 	|---socketçš„åå­—
+*
 */
-//½«Ã¿Ò»¸ösocketÈ¡¸öÃû×Ö±ãÓÚÑ°ÕÒ£¬Õâ¾ÍÊÇSocketEntityµÄ×÷ÓÃ
 public class SocketEntity {
 	private Socket socket;
 	private String name;
 	
+	
+	
+	
+	//è®¾ç½®å’Œè·å–æˆå‘˜å˜é‡
 	public SocketEntity() {
 		super();
 	}
-	
 	public SocketEntity(Socket socket, String name) {
 		super();
 		this.socket = socket;
 		this.name = name;
-	}
-	
+	}	
 	public Socket getSocket() {
 		return socket;
 	}
-	
 	public void setSocket(Socket socket) {
 		this.socket = socket;
 	}
-	
 	public String getName() {
 		return name;
 	}

@@ -3,8 +3,7 @@ package _Util;
 import java.io.Serializable;
 
 /**
-* @author zzz
-* @version 创建时间：2018年7月5日 上午8:59:53
+*
 */
 public class CommandTranser implements Serializable {
 	private static final long serialVersionUID = 1L;

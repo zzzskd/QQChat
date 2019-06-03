@@ -1,12 +1,11 @@
-package _Socket;
+锘縫ackage _Socket;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
-* @author zzz
-* @version 创建时间：2018年7月4日 下午8:11:30
+*	Start
 */
 public class Service {
 	public void startService() {
